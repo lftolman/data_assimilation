@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kalman_bucy_filter"
+version = "0.1.0"
+description = "A Kalman-Bucy filtering package"
+authors = [{ name = "Lydia Tolman"}]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = ["numpy"]
