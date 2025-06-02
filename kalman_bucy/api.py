@@ -1,6 +1,7 @@
 import numpy as np
 from tqdm import tqdm
 from matplotlib import pyplot as plt
+from .utils import extract_terms
 
 def kalman_bucy(d_uI, d_uII, t_span, uI, uII_0, R0=None, SigmaI=None, SigmaII=None,dt = None):
     """ Implementation of the Kalman-Bucy filter for conditionally Gaussian systems
@@ -25,10 +26,10 @@ def kalman_bucy(d_uI, d_uII, t_span, uI, uII_0, R0=None, SigmaI=None, SigmaII=No
     
     t0, tf = t_span
     n = len(uI)
-    d = len(uII0)
-    if dt is None:
-        dt = (tf - t0) / n
-    t_vals = np.arange(t0, tf, dt)
+    d = len(uII_0)
+    t_vals = np.linspace(t0, tf, n)
+    dt = (tf - t0) / n if dt is None else dt
+    print(dt)
     uII = np.zeros((d, n))
     uII[:,0] = uII_0
     R = np.zeros((n, d, d))
@@ -36,19 +37,19 @@ def kalman_bucy(d_uI, d_uII, t_span, uI, uII_0, R0=None, SigmaI=None, SigmaII=No
     if SigmaI is not None:
         Sig_inv = np.linalg.inv(SigmaI@SigmaI.T)
     else: 
-        Sig_inv = np.zeros_like((uI[0], uI[0]))
+        Sig_inv = np.zeros((len(uI[0]), len(uI[0])))
 
     if SigmaII is not None:
         Sigma2 = SigmaII@SigmaII.T
     else: 
-        Sigma2 = np.zeros_like((d, d))
+        Sigma2 = np.zeros((d, d))
 
     for i in tqdm(range(1, n)):
         A0,A1 = extract_terms(d_uI, t_vals[i], uI[i], uII[:,i-1])
         a0, a1 = extract_terms(d_uII, t_vals[i], uI[i], uII[:,i-1])
 
 
-        duI = uI[i] - uI[i-1]
+        duI = (uI[i] - uI[i-1])
 
         innovation = duI - (A0 + (A1 @ uII[:,i-1])) * dt
         
