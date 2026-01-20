@@ -1,0 +1,56 @@
+name: Bump version on merge to main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  bump-version:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install toml parser
+        run: pip install toml
+
+      - name: Bump patch version
+        run: |
+          python << 'EOF'
+          import toml
+
+          path = "pyproject.toml"
+          data = toml.load(path)
+
+          version = data["project"]["version"]
+          major, minor, patch = map(int, version.split("."))
+
+          patch += 1
+          new_version = f"{major}.{minor}.{patch}"
+
+          data["project"]["version"] = new_version
+          toml.dump(data, open(path, "w"))
+
+          print(f"Bumped version: {version} → {new_version}")
+          EOF
+
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add pyproject.toml
+          git commit -m "chore: bump version"
+          git push
