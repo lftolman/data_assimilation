@@ -29,6 +29,9 @@ from kalman_bucy import kalman_bucy
 
 ## Pipeline for Editing 
 
+### Versioning
+PATCH version automatically increments on merges to main. MINOR and MAJOR versions should be updated manually when new methods are added or major changes are made.
+
 ## Current To Do (Replaced Weekly)
 
  - [ ] revamp codebase
