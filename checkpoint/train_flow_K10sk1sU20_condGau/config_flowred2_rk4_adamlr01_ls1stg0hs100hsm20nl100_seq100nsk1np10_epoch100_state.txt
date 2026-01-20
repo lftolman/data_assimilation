@@ -1,0 +1,26 @@
+train_length : 200109
+pred_length : 200000
+input_length : 100
+iters : 100
+train_batch : 100
+nskip : 1
+npred : 10
+kmax : 10
+kred : 2
+epoch : 100
+nhid : 100
+nhidm : 20
+nloss : 100
+lr : 0.001
+schedule : [40, 75]
+gamma : 0.5
+momentum : 0.5
+weight_decay : 0.0001
+loss_type : state
+checkpoint : checkpoint/train_flow_K10sk1sU20_condGau
+data_file : data/baro_init_K10sk20sU10dk1dU1.mat
+resume : False
+manualSeed : 6974
+
+Total model params. for mean: 8481
+Total model params. for vari: 197008
