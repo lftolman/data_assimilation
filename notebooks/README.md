@@ -6,9 +6,10 @@ Each method has its own directory with exploratory and validation folders. Feel 
 ## Rules
 
 - DOCUMENT DOCUMENT DOCUMENT (for the sake of others and for future you)
-- Any outputs from exploratory notebooks should be saved to "../scratch/output" NOT "../results/"
+- Any outputs should be saved to "../scratch/output" NOT "../results/"
 - Exploratory notebooks should be understandable to others (sandbox in "../scratch/", then clean, document, and move to corresponding exploratory folder)
 - Validation notebooks should be reproducable and extremely well documented
-- Outputs of value from validation notebooks should be saved to "../results/" with a description & short analysis in the corresponding README.md
+- Outputs of value from validation notebooks should be saved to "../scratch/output/" then moved to appropriate directory within "../results/" with a description & short analysis in the corresponding README.md
 - Validation notebooks should be of a quality that all major functions should be pushed to and called from the package (no major blocks of code)
 - PLEASE document
+
