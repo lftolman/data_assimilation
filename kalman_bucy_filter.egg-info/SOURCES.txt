@@ -2,7 +2,7 @@ README.md
 pyproject.toml
 setup.py
 kalman_bucy/__init__.py
-kalman_bucy/kalman_bucy.py
+kalman_bucy/api.py
 kalman_bucy/utils.py
 kalman_bucy_filter.egg-info/PKG-INFO
 kalman_bucy_filter.egg-info/SOURCES.txt
