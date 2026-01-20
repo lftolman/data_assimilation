@@ -1,1 +1,0 @@
-Epoch	        Learning Rate.	Train Loss.	Accu. U	        Accu. n_U	Accu. mu	Accu. f_u	Accu. Ru	Accu. g_v	
