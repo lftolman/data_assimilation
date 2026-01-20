@@ -1,12 +1,14 @@
 [build-system]
-requires = ["setuptools>=64", "wheel"]
+requires = [ "setuptools>=64", "wheel",]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "da"
-version = "0.1.0"
+version = "0.1.1"
 description = "Conditionally Gaussian data assimilation methods and experiments"
-authors = [{ name = "Lydia Tolman"}]
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = ["numpy","scipy","matplotlib"]
+dependencies = [ "numpy", "scipy", "matplotlib",]
+[[project.authors]]
+name = "Lydia Tolman"
+
