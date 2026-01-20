@@ -29,6 +29,12 @@ from kalman_bucy import kalman_bucy
 
 ## Pipeline for Editing 
 
+### Workflow
+
+Do any sandbox work in the untracked \scratch directory then clean and put in a visible exploratory notebook. When there is a new method, experiment, or other important code, add it to the package and show its implementation in a validation notebook.
+
+`/scratch` → `/notebooks/[filter]/exploratory` → `/notebooks/[filter]/validation` & `/src`
+
 ### Versioning
 PATCH version automatically increments on merges to main. MINOR and MAJOR versions should be updated manually when new methods are added or major changes are made.
 
