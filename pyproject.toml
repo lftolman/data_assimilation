@@ -3,10 +3,10 @@ requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "kalman_bucy_filter"
+name = "da"
 version = "0.1.0"
-description = "A Kalman-Bucy filtering package"
+description = "Conditionally Gaussian data assimilation methods and experiments"
 authors = [{ name = "Lydia Tolman"}]
 readme = "README.md"
-requires-python = ">=3.8"
-dependencies = ["numpy"]
+requires-python = ">=3.10"
+dependencies = ["numpy","scipy","matplotlib"]
