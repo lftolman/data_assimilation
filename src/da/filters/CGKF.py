@@ -1,9 +1,9 @@
 import numpy as np
 from tqdm import tqdm
-from .utils import extract_terms
+from ../utils import extract_terms
 
 
-def kalman_rhs(mu, R, U, dUdt, d_uI, d_uII, Sigma2, Gamma_inv, t):
+def CGKF_rhs(mu, R, U, dUdt, d_uI, d_uII, Sigma2, Gamma_inv, t):
     """
     Compute RHS for μ and R:
     dμ/dt = a1 μ + a0 + K(innovation)
@@ -34,9 +34,9 @@ def kalman_rhs(mu, R, U, dUdt, d_uI, d_uII, Sigma2, Gamma_inv, t):
     return dmu, dR
 
 
-def kalman_bucy(d_uI, d_uII, t_span, uI, uII_0, R0, Sigma, Gamma):
+def CGKF(d_uI, d_uII, t_span, uI, uII_0, R0, Sigma, Gamma):
     """
-    RK4 version of Kalman-Bucy filter.
+    RK4 version of Conditionally Gaussian Kalman Filter.
     t_vals: array of times (fixed grid)
     uI: observed U(t)
     """
@@ -83,17 +83,17 @@ def kalman_bucy(d_uI, d_uII, t_span, uI, uII_0, R0, Sigma, Gamma):
         dU_t = dUdt[k-1]
 
         # ---- RK4 stage 1 ----
-        k1_mu, k1_R = kalman_rhs(mu, R, U_t, dU_t, d_uI, d_uII, Sigma, Gamma_inv, t)
+        k1_mu, k1_R = CGKF_rhs(mu, R, U_t, dU_t, d_uI, d_uII, Sigma, Gamma_inv, t)
 
         # ---- RK4 stage 2 ----
         mu2 = mu + 0.5 * dt * k1_mu
         R2 = R + 0.5 * dt * k1_R
-        k2_mu, k2_R = kalman_rhs(mu2, R2, U_t, dU_t, d_uI, d_uII, Sigma, Gamma_inv, t + 0.5*dt)
+        k2_mu, k2_R = CGKF_rhs(mu2, R2, U_t, dU_t, d_uI, d_uII, Sigma, Gamma_inv, t + 0.5*dt)
 
         # ---- RK4 stage 3 ----
         mu3 = mu + 0.5 * dt * k2_mu
         R3 = R + 0.5 * dt * k2_R
-        k3_mu, k3_R = kalman_rhs(mu3, R3, U_t, dU_t, d_uI, d_uII, Sigma, Gamma_inv, t + 0.5*dt)
+        k3_mu, k3_R = CGKF_rhs(mu3, R3, U_t, dU_t, d_uI, d_uII, Sigma, Gamma_inv, t + 0.5*dt)
 
         # ---- RK4 stage 4 ----
         U_t2  = U[k]              # use the next observed U
@@ -101,7 +101,7 @@ def kalman_bucy(d_uI, d_uII, t_span, uI, uII_0, R0, Sigma, Gamma):
         dU_t2 = dUdt[k]
         mu4 = mu + dt * k3_mu
         R4 = R + dt * k3_R
-        k4_mu, k4_R = kalman_rhs(mu4, R4, U_t2, dU_t2, d_uI, d_uII, Sigma, Gamma_inv, t + dt)
+        k4_mu, k4_R = CGKF_rhs(mu4, R4, U_t2, dU_t2, d_uI, d_uII, Sigma, Gamma_inv, t + dt)
 
         # ---- Combine RK4 ----
         mu = mu + (dt/6)*(k1_mu + 2*k2_mu + 2*k3_mu + k4_mu)
@@ -120,7 +120,7 @@ def kalman_bucy(d_uI, d_uII, t_span, uI, uII_0, R0, Sigma, Gamma):
     }
 
 
-def kalman_rhs2(mu, R, U, dUdt, d_uI, d_uII, Sigma2, Gamma_inv, t):
+def CGKF_rhs2(mu, R, U, dUdt, d_uI, d_uII, Sigma2, Gamma_inv, t):
     """
     Compute RHS for μ and R:
     dμ/dt = a1 μ + a0 + K(innovation)
@@ -152,9 +152,9 @@ def kalman_rhs2(mu, R, U, dUdt, d_uI, d_uII, Sigma2, Gamma_inv, t):
     return dmu, dR
 
 
-def kalman_bucy2(d_uI, d_uII, t_span, uI, uII_0, R0, Sigma, Gamma):
+def CGKF_RK4(d_uI, d_uII, t_span, uI, uII_0, R0, Sigma, Gamma):
     """
-    RK4 version of Kalman-Bucy filter.
+    RK4 version of Conditionally Gaussian Kalman Filter.
     t_vals: array of times (fixed grid)
     uI: observed U(t)
     """
@@ -200,21 +200,21 @@ def kalman_bucy2(d_uI, d_uII, t_span, uI, uII_0, R0, Sigma, Gamma):
         dU_t = dUdt[k-1]
 
         # ---- RK4 stage 1 ----
-        k1_mu, _ = kalman_rhs2(mu, R, U_t, dU_t, d_uI, d_uII, Sigma, Gamma_inv, t)
+        k1_mu, _ = CGKF_rhs2(mu, R, U_t, dU_t, d_uI, d_uII, Sigma, Gamma_inv, t)
 
         # ---- RK4 stage 2 ----
         mu2 = mu + 0.5 * dt * k1_mu
-        k2_mu, _ = kalman_rhs2(mu2, R, U_t, dU_t, d_uI, d_uII, Sigma, Gamma_inv, t + 0.5*dt)
+        k2_mu, _ = CGKF_rhs2(mu2, R, U_t, dU_t, d_uI, d_uII, Sigma, Gamma_inv, t + 0.5*dt)
         # ---- RK4 stage 3 ----
         mu3 = mu + 0.5 * dt * k2_mu
-        k3_mu, _ = kalman_rhs2(mu3, R, U_t, dU_t, d_uI, d_uII, Sigma, Gamma_inv, t + 0.5*dt)
+        k3_mu, _ = CGKF_rhs2(mu3, R, U_t, dU_t, d_uI, d_uII, Sigma, Gamma_inv, t + 0.5*dt)
 
         # ---- RK4 stage 4 ----
         U_t2  = U[k]              # use the next observed U
 
         dU_t2 = dUdt[k]
         mu4 = mu + dt * k3_mu
-        k4_mu, _ = kalman_rhs2(mu4, R, U_t2, dU_t2, d_uI, d_uII, Sigma, Gamma_inv, t + dt)
+        k4_mu, _ = CGKF_rhs2(mu4, R, U_t2, dU_t2, d_uI, d_uII, Sigma, Gamma_inv, t + dt)
 
         # ---- Combine RK4 ----
         mu = mu + (dt/6)*(k1_mu + 2*k2_mu + 2*k3_mu + k4_mu)
@@ -227,3 +227,4 @@ def kalman_bucy2(d_uI, d_uII, t_span, uI, uII_0, R0, Sigma, Gamma):
         "uII": mu_hist.T,   # match your previous shape
         "R": R_hist
     }
+
