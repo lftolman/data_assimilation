@@ -2,7 +2,7 @@
 
 ## Summary
 
-Exploration of data assimilation methods for conditionally guassian dynamical systems. 
+Exploration of data assimilation methods for conditionally gaussian dynamical systems. 
 
 
 ## Installation
