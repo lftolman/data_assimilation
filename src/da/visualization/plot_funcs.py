@@ -105,7 +105,7 @@ def plot_error_trajectory(t, true, preds_dict, window=None, var_name=None):
 
     plt.title(f"Error Trajectory: {var_name}")
     plt.xlabel("Time ($t$)")
-    plt.ylabel("Error ($\hat{v} - v$)")
+    plt.ylabel(r"Error ($\hat{v} - v$)")
     plt.legend(loc='upper right')
     plt.grid(True, alpha=0.3)
 
