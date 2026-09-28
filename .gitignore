@@ -1,1 +1,11 @@
 # ignore scratch work
+scratch/
+
+# python bytecode cache / envs
+__pycache__/
+*.pyc
+.venv/
+
+# large generated data assets (regenerate via scripts/, don't commit)
+src/da/data_files/*.mat
+src/da/data_files/*.npz

@@ -8,7 +8,7 @@ version = "0.1.5"
 description = "Conditionally Gaussian data assimilation methods and experiments"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [ "numpy", "scipy", "matplotlib",]
+dependencies = [ "numpy", "scipy", "matplotlib", "tqdm", "pandas", "jax",]
 [[project.authors]]
 name = "Lydia Tolman"
 
