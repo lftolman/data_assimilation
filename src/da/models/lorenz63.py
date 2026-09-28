@@ -1,5 +1,11 @@
 import numpy as np
 
+params = dict(
+    rho=28.0,
+    beta=8/3,
+    sigma=10.0
+)
+
 def EM(x0, T = 100, timesteps = 100000, c = 10):
     """ Euler Maruyama for Lorenz63 """
     delta_t = T/timesteps
@@ -15,7 +21,21 @@ def EM(x0, T = 100, timesteps = 100000, c = 10):
 
     return final
 
+def f_uI(t, U, uII, params = params):
+    """Lorenz Equation for observed x variable, which we treat as the "mean flow" U. Depends on y and z through a linear coupling term."""
+    sigma = params['sigma']
+    return sigma * (uII[0] - U)
 
+def f_uII(t, U, uII, params = params):
+    """Lorenz Equations for unobserved y and z variables, which we treat as the "complex modes" uII. Depends on x through a linear coupling term."""
+    rho, beta = params['rho'], params['beta']
+    y, z = uII
+    d_y = U * (rho - z) - y
+    d_z = U * y - beta * z
+    return np.array([d_y, d_z])
+
+def lorenz63(params = params):
+    return f_uI, f_uII, params
 
 def lorenz_kb_nudging(x_obs):
     rho = 28

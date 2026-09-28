@@ -7,10 +7,10 @@ Exploration of data assimilation methods for conditionally gaussian dynamical sy
 
 ## Installation
 
-To clone this repository run this command, replacing username with your github username:
+To clone this repository:
 
 ```bash
-git clone git@github.com:username/data_assimilation.git
+git clone git@github.com:lftolman/data_assimilation.git
 ```
 
 To install as a package run these commands:
@@ -21,19 +21,19 @@ cd data_assimilation
 pip install -e .
 ```
 
-To import the Kalman-Bucy filter in a notebook, use this syntax:
+To import a filter in a notebook, use this syntax:
 
-```bash
-from kalman_bucy import kalman_bucy
+```python
+from da.filters import CGKF
 ```
 
 ## Pipeline for Editing 
 
 ### Workflow
 
-Do any sandbox work in the untracked \scratch directory then clean and put in a visible exploratory notebook. When there is a new method, experiment, or other important code, add it to the package and show its implementation in a validation notebook.
+Do any sandbox work in the untracked \scratch directory then clean and put in a visible exploration notebook. When there is a new method, experiment, or other important code, add it to the package and show its implementation in a validation notebook.
 
-`/scratch` → `/notebooks/[filter]/exploratory` → `/notebooks/[filter]/validation` & `/src`
+`/scratch` → `/notebooks/[filter]/exploration` → `/notebooks/[filter]/validation` & `/src`
 
 ### Versioning
 PATCH version automatically increments on merges to main. MINOR and MAJOR versions should be updated manually when new methods are added or major changes are made.
